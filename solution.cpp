@@ -12,12 +12,10 @@ using namespace std;
 x1 x2 x3 x4| f
 0  0  0  0 | 0
 ...
-
 Да, во многих решениях предлагается считывать только позиции единиц,
 но мне кажется, что такой вид представления таблицы истинности
 позволяет внедрять новые функции - построение КНФ, ДНФ по таблице истинности, например.
 Да и работать - дебажить - с такой таблицей проще и нагляднее.
-
 Карта Карно:
 x3, x4| 0 0 | 0 1 | 1 1 | 1 0
 x1, x2|  f  |  f  |  f  |  f
@@ -25,7 +23,6 @@ x1, x2|  f  |  f  |  f  |  f
  0  1 |  f  |  f  |  f  |  f
  1  1 |  f  |  f  |  f  |  f
  1  0 |  f  |  f  |  f  |  f
-
 */
 
 class Kmap_Solution {
@@ -267,29 +264,29 @@ private:
         return respond;
     }
 
-    pair<int, int> parse_square(char **kmap, int k, int m, int n)
+    pair<int, int> parse_square(int k, int m)
     {
-        if (is_square(kmap, k, m, n))
+        if (is_square(k, m))
         {
             return pair<int, int>{k, m};
         }
         if (k - 1 < 0)
         {
-            if (is_square(kmap, n - 1, m, n))
+            if (is_square(n - 1, m))
             {
                 return pair<int, int>{n - 1, m};
             }
         }
         if (m - 1 < 0)
         {
-            if (is_square(kmap, k, n - 1, n))
+            if (is_square(k, n - 1))
             {
                 return pair<int, int>{k, n - 1};
             }
         }
         if (k - 1 < 0 && m - 1 < 0 && k != 0 && m != 0)
         {
-            if (is_square(kmap, n - 1, n - 1, n))
+            if (is_square(n - 1, n - 1))
             {
                 return pair<int, int>{n - 1, n - 1};
             }
@@ -689,9 +686,9 @@ private:
 void test_cases()
 {
     const int n = 4;
-    char kmap1_static[4][4] = { {'0', '0', '1', '1'},
+    char kmap1_static[4][4] = { {'1', '0', '1', '1'},
                                {'1', '0', '0', '1'},
-                               {'0', '1', '1', '1'},
+                               {'1', '1', '1', '1'},
                                {'1', '1', '1', '1'} };
 
     char** kmap1 = new char* [n];
