@@ -267,34 +267,33 @@ private:
         return respond;
     }
 
-    pair<int, int> parse_square(int k, int m)
+    pair<int, int> parse_square(char **kmap, int k, int m, int n)
     {
-        if (is_square(k, m))
+        if (is_square(kmap, k, m, n))
         {
             return pair<int, int>{k, m};
         }
-        if (k - 1 < 0 && m - 1 < 0)
-        {
-            if (is_square(n - 1, n - 1))
-            {
-                return pair<int, int>{n - 1, n - 1};
-            }
-        }
         if (k - 1 < 0)
         {
-            if (is_square(n - 1, m))
+            if (is_square(kmap, n - 1, m, n))
             {
                 return pair<int, int>{n - 1, m};
             }
         }
         if (m - 1 < 0)
         {
-            if (is_square(k, n - 1))
+            if (is_square(kmap, k, n - 1, n))
             {
                 return pair<int, int>{k, n - 1};
             }
         }
-
+        if (k - 1 < 0 && m - 1 < 0 && k != 0 && m != 0)
+        {
+            if (is_square(kmap, n - 1, n - 1, n))
+            {
+                return pair<int, int>{n - 1, n - 1};
+            }
+        }
         return pair<int, int>{-1, -1};
     }
 
