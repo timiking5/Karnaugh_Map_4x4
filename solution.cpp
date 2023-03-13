@@ -277,7 +277,7 @@ private:
                 return pair<int, int>{k, n - 1};
             }
         }
-        if (k - 1 < 0 && m - 1 < 0 && k != 0 && m != 0)
+        if (k - 1 < 0 && m - 1 < 0)
         {
             if (is_square(n - 1, n - 1))
             {
