@@ -25,40 +25,50 @@ x1, x2|  f  |  f  |  f  |  f
  1  0 |  f  |  f  |  f  |  f
 */
 
-class Kmap_Solution {
-    char** truth_table;
-    char** kmap;
+class Kmap_Solution
+{
+    char **truth_table;
+    char **kmap;
     int n;
+
 public:
-    Kmap_Solution(int variables) {
+    Kmap_Solution(int variables)
+    {
         n = variables;
-        if (n > 0) {
+        if (n > 0)
+        {
             truth_table = input_truth_table();
             kmap = create_karnaugh_map();
             print_table(kmap, n, n);
-            cout << endl << build_expression();
+            cout << endl
+                 << build_expression();
         }
-        else {
+        else
+        {
             truth_table = nullptr;
             kmap = nullptr;
         }
     }
-    Kmap_Solution(char** Karnaugh_map, int variables) {
+    Kmap_Solution(char **Karnaugh_map, int variables)
+    {
         truth_table = nullptr;
         kmap = Karnaugh_map;
         n = variables;
         print_table(kmap, n, n);
-        cout << endl << build_expression();
+        cout << endl
+             << build_expression();
     }
-    ~Kmap_Solution() {
+    ~Kmap_Solution()
+    {
         if (truth_table != nullptr)
             free_array(truth_table, 1 << n);
         free_array(kmap, n);
     }
+
 private:
-    char** input_truth_table()
+    char **input_truth_table()
     { // n - кол-во переменных
-        char** respond = new char* [1 << n];
+        char **respond = new char *[1 << n];
         for (int i = 0; i < 1 << n; i++)
         {
             respond[i] = new char[n + 1]; // n + 1 т.к. n переменных и 1 столбец значения функции
@@ -73,7 +83,7 @@ private:
         return respond;
     }
 
-    void print_table(char** table, int k, int m)
+    void print_table(char **table, int k, int m)
     {
         for (int i = 0; i < k; i++)
         {
@@ -85,9 +95,9 @@ private:
         }
     }
 
-    char** create_karnaugh_map()
+    char **create_karnaugh_map()
     {
-        char** respond = new char* [n];
+        char **respond = new char *[n];
         for (int i = 0; i < n; i++)
         {
             respond[i] = new char[n];
@@ -219,12 +229,12 @@ private:
         }
         if (mid_line.size() == 4 && right_line.size() == 4)
         {
-            respond = vector<int>{ k, k + 1 };
+            respond = vector<int>{k, k + 1};
             return respond;
         }
         else if (mid_line.size() == 4 && left_line.size() == 4)
         {
-            respond = vector<int>{ k - 1, k };
+            respond = vector<int>{k - 1, k};
             return respond;
         }
         else
@@ -249,12 +259,12 @@ private:
         }
         if (mid_line.size() == 4 && top_line.size() == 4)
         {
-            respond = vector<int>{ m - 1, m };
+            respond = vector<int>{m - 1, m};
             return respond;
         }
         else if (mid_line.size() == 4 && bottom_line.size() == 4)
         {
-            respond = vector<int>{ m, m + 1 };
+            respond = vector<int>{m, m + 1};
             return respond;
         }
 
@@ -312,7 +322,7 @@ private:
             return "1";
         if (check_all_zeros())
             return "0";
-        char** checked = create_unchecked_map();
+        char **checked = create_unchecked_map();
         string expression = "";
         for (int i = 0; i < n; i++)
         {
@@ -325,35 +335,35 @@ private:
                     if (parse_rectangle_horizontal(j, i).size() > 0)
                     {
                         expression = expression + " + " +
-                            to_expression_horizontal_rectangle(checked, parse_rectangle_horizontal(j, i));
+                                     to_expression_horizontal_rectangle(checked, parse_rectangle_horizontal(j, i));
                         ;
                     }
                     else if (parse_rectangle_vertical(j, i).size() > 0)
                     {
                         expression = expression + " + " +
-                            to_expression_vertical_rectangle(checked, parse_rectangle_vertical(j, i));
+                                     to_expression_vertical_rectangle(checked, parse_rectangle_vertical(j, i));
                     }
                     else if (parse_square(i, j).first != -1)
                     {
                         expression = expression + " + " +
-                            to_expression_square(checked, parse_square(i, j));
+                                     to_expression_square(checked, parse_square(i, j));
                     }
                     else if (parse_line_horizontal(j, i).size() == 1 && parse_line_vertical(j, i).size() == 1)
                     {
                         expression = expression + " + " +
-                            to_expression_single_one(checked, i, j);
+                                     to_expression_single_one(checked, i, j);
                     }
                     else if (parse_line_horizontal(j, i).size() > 0 || parse_line_vertical(j, i).size() > 0)
                     {
                         if (parse_line_horizontal(j, i).size() > parse_line_vertical(j, i).size())
                         {
                             expression = expression + " + " +
-                                to_expression_horizontal_line(checked, parse_line_horizontal(j, i), i);
+                                         to_expression_horizontal_line(checked, parse_line_horizontal(j, i), i);
                         }
                         else
                         {
                             expression = expression + " + " +
-                                to_expression_vertical_line(checked, parse_line_vertical(j, i), j);
+                                         to_expression_vertical_line(checked, parse_line_vertical(j, i), j);
                         }
                     }
                 }
@@ -363,7 +373,7 @@ private:
         return expression.substr(3, expression.length() + 1);
     }
 
-    string to_expression_horizontal_line(char** checked, vector<int> indexes, int line)
+    string to_expression_horizontal_line(char **checked, vector<int> indexes, int line)
     {
         if (indexes.size() == 3)
         {
@@ -419,7 +429,7 @@ private:
         return expr;
     }
 
-    string to_expression_vertical_line(char** checked, vector<int> indexes, int line)
+    string to_expression_vertical_line(char **checked, vector<int> indexes, int line)
     {
         if (indexes.size() == 3)
         {
@@ -474,7 +484,7 @@ private:
         return expr;
     }
 
-    string to_expression_vertical_rectangle(char** checked, vector<int> lines)
+    string to_expression_vertical_rectangle(char **checked, vector<int> lines)
     {
         for (int i = 0; i < n; i++)
         {
@@ -503,7 +513,7 @@ private:
         return expr;
     }
 
-    string to_expression_horizontal_rectangle(char** checked, vector<int> lines)
+    string to_expression_horizontal_rectangle(char **checked, vector<int> lines)
     {
         for (int i = 0; i < lines.size(); i++)
         {
@@ -532,7 +542,7 @@ private:
         return expr;
     }
 
-    string to_expression_square(char** checked, pair<int, int> position)
+    string to_expression_square(char **checked, pair<int, int> position)
     {
         int k = position.first + 1;
         int m = position.second + 1;
@@ -583,7 +593,7 @@ private:
         return expr;
     }
 
-    string to_expression_single_one(char** checked, int i, int j)
+    string to_expression_single_one(char **checked, int i, int j)
     {
         checked[i][j] = '1';
         string expr = "";
@@ -650,9 +660,9 @@ private:
         return true;
     }
 
-    char** create_unchecked_map()
+    char **create_unchecked_map()
     {
-        char** respond = new char* [n];
+        char **respond = new char *[n];
         for (int i = 0; i < n; i++)
         {
             respond[i] = new char[n];
@@ -661,16 +671,13 @@ private:
         {
             for (int j = 0; j < n; j++)
             {
-                if (kmap[i][j] == '1')
-                    respond[i][j] = '0';
-                else
-                    respond[i][j] = '*'; // нам не важны нули
+                respond[i][j] = kmap[i][j] - 1;
             }
         }
         return respond;
     }
 
-    void free_array(char** matrix, int k)
+    void free_array(char **matrix, int k)
     {
         for (int i = 0; i < k; i++)
         {
@@ -683,12 +690,12 @@ private:
 void test_cases()
 {
     const int n = 4;
-    char kmap1_static[4][4] = { {'1', '0', '1', '1'},
+    char kmap1_static[4][4] = {{'1', '0', '1', '1'},
                                {'1', '0', '0', '1'},
                                {'1', '1', '1', '1'},
-                               {'1', '1', '1', '1'} };
+                               {'1', '1', '1', '1'}};
 
-    char** kmap1 = new char* [n];
+    char **kmap1 = new char *[n];
     for (int i = 0; i < n; i++)
     {
         kmap1[i] = new char[n];
@@ -698,7 +705,7 @@ void test_cases()
             kmap1[i][j] = kmap1_static[i][j];
     Kmap_Solution k1 = Kmap_Solution(kmap1, n);
     cout << "\n\n";
-    char** kmap2 = new char* [n];
+    char **kmap2 = new char *[n];
     for (int i = 0; i < n; i++)
     {
         kmap2[i] = new char[n];
@@ -710,7 +717,7 @@ void test_cases()
     Kmap_Solution k2 = Kmap_Solution(kmap2, n);
     cout << "\n\n";
 
-    char** kmap3 = new char* [n];
+    char **kmap3 = new char *[n];
     for (int i = 0; i < n; i++)
     {
         kmap3[i] = new char[n];
@@ -724,7 +731,7 @@ void test_cases()
     Kmap_Solution k3 = Kmap_Solution(kmap3, n);
     cout << "\n\n";
 
-    char** kmap4 = new char* [n];
+    char **kmap4 = new char *[n];
     for (int i = 0; i < n; i++)
     {
         kmap4[i] = new char[n];
@@ -737,6 +744,7 @@ void test_cases()
 
 int main()
 {
-    test_cases();
+    // test_cases();
+    Kmap_Solution(4);
     return 0;
 }
