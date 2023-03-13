@@ -207,24 +207,22 @@ private:
         // квадрат 2х2, пр-ки 2x4, 4x2, все фигуры можно индетифицировать с помощью функций parse_line
         vector<int> respond;
         vector<int> mid_line = parse_line_vertical(k, m);
-        vector<int> left_line;
-        vector<int> right_line;
-        if (k + 1 < n)
-        {
-            right_line = parse_line_vertical(k + 1, m);
-        }
-        if (k - 1 >= 0)
-        {
-            left_line = parse_line_vertical(k - 1, m);
-        }
+        
+        int i = k - 1;
+        int j = k + 1;
+        if (i < 0) i = n - 1;
+        if (j >= n) j = 0;
+        vector<int> left_line = parse_line_vertical(i, m);
+        vector<int> right_line = parse_line_vertical(j, m);
+       
         if (mid_line.size() == 4 && right_line.size() == 4)
         {
-            respond = vector<int>{ k, k + 1 };
+            respond = vector<int>{ k, j };
             return respond;
         }
         else if (mid_line.size() == 4 && left_line.size() == 4)
         {
-            respond = vector<int>{ k - 1, k };
+            respond = vector<int>{ i, k };
             return respond;
         }
         else
@@ -237,24 +235,22 @@ private:
     {
         vector<int> respond;
         vector<int> mid_line = parse_line_horizontal(k, m);
-        vector<int> top_line;
-        vector<int> bottom_line;
-        if (m + 1 < n)
-        {
-            bottom_line = parse_line_horizontal(k, m + 1);
-        }
-        if (m - 1 >= 0)
-        {
-            top_line = parse_line_horizontal(k, m - 1);
-        }
+
+        int i = m - 1;
+        int j = m + 1;
+        if (i < 0) i = n - 1;
+        if (j >= n) j = 0;
+        vector<int> top_line = parse_line_horizontal(k, i);
+        vector<int> bottom_line = parse_line_horizontal(k, j);
+
         if (mid_line.size() == 4 && top_line.size() == 4)
         {
-            respond = vector<int>{ m - 1, m };
+            respond = vector<int>{ i, m };
             return respond;
         }
         else if (mid_line.size() == 4 && bottom_line.size() == 4)
         {
-            respond = vector<int>{ m, m + 1 };
+            respond = vector<int>{ m, j };
             return respond;
         }
 
@@ -318,7 +314,7 @@ private:
         {
             for (int j = 0; j < n; j++)
             {
-                // cout << "checked: " << checked[i][j] << " ; i = " << i << " ; j = " << j << "; expression: " << expression << endl;
+                cout << "checked: " << checked[i][j] << " ; i = " << i << " ; j = " << j << "; expression: " << expression << endl;
                 if (checked[i][j] == '0')
                 {
 
@@ -476,6 +472,7 @@ private:
 
     string to_expression_vertical_rectangle(char** checked, vector<int> lines)
     {
+        sort(lines.begin(), lines.end());
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < lines.size(); j++)
@@ -496,7 +493,7 @@ private:
         {
             expr = "x3";
         }
-        else if (lines[0] == 3 && lines[1] == 0)
+        else if (lines[0] == 0 && lines[1] == 3)
         {
             expr = "x4'";
         }
@@ -505,6 +502,7 @@ private:
 
     string to_expression_horizontal_rectangle(char** checked, vector<int> lines)
     {
+        sort(lines.begin(), lines.end());
         for (int i = 0; i < lines.size(); i++)
         {
             for (int j = 0; j < n; j++)
@@ -525,7 +523,7 @@ private:
         {
             expr = "x1";
         }
-        else if (lines[0] == 3 && lines[1] == 0)
+        else if (lines[0] == 0 && lines[1] == 3)
         {
             expr = "x2'";
         }
