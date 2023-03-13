@@ -661,10 +661,7 @@ private:
         {
             for (int j = 0; j < n; j++)
             {
-                if (kmap[i][j] == '1')
-                    respond[i][j] = '0';
-                else
-                    respond[i][j] = '*'; // нам не важны нули
+                respond[i][j] = kmap[i][j] - 1;
             }
         }
         return respond;
