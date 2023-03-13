@@ -52,18 +52,18 @@ public:
     }
     ~Kmap_Solution() {
         if (truth_table != nullptr)
-            free_array(truth_table, pow(2, n));
+            free_array(truth_table, 1 << n);
         free_array(kmap, n);
     }
 private:
     char** input_truth_table()
     { // n - кол-во переменных
-        char** respond = new char* [pow(2, n)];
-        for (int i = 0; i < pow(2, n); i++)
+        char** respond = new char* [1 << n];
+        for (int i = 0; i < 1 << n; i++)
         {
             respond[i] = new char[n + 1]; // n + 1 т.к. n переменных и 1 столбец значения функции
         }
-        for (int i = 0; i < pow(2, n); i++)
+        for (int i = 0; i < 1 << n; i++)
         {
             for (int j = 0; j < n + 1; j++)
             {
@@ -79,12 +79,9 @@ private:
         {
             for (int j = 0; j < m; j++)
             {
-                cout << table[i][j];
-                if (j != m - 1)
-                    cout << " ";
+                cout << table[i][j] << " ";
             }
-            if (i != n - 1)
-                cout << endl;
+            cout << endl;
         }
     }
 
